@@ -1,0 +1,100 @@
+[gd_scene load_steps=7 format=3 uid="uid://dnnflb6n3qk7t"]
+
+[ext_resource type="Script" path="res://addons/beehave/nodes/beehave_tree.gd" id="1_1g7kl"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector_reactive.gd" id="2_klmv3"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/sequence_reactive.gd" id="2_l2p1q"]
+[ext_resource type="Script" path="res://action_leaf.gd" id="4_58o2b"]
+[ext_resource type="Script" path="res://condition_leaf.gd" id="4_hnp0o"]
+[ext_resource type="Script" path="res://addons/beehave/nodes/composites/selector.gd" id="5_egvwb"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="CheckButton" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+button_pressed = true
+text = "Condition"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "ActionLeaf1 interrupts:"
+
+[node name="InterruptsLabel1" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "0
+"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "ActionLeaf2 interrupts:"
+
+[node name="InterruptsLabel2" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "0
+"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "ActionLeaf3 interrupts:"
+
+[node name="InterruptsLabel3" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "0
+"
+
+[node name="BeehaveTree" type="Node" parent="."]
+script = ExtResource("1_1g7kl")
+
+[node name="SelectorReactiveComposite" type="Node" parent="BeehaveTree"]
+script = ExtResource("2_klmv3")
+
+[node name="SequenceReactiveComposite" type="Node" parent="BeehaveTree/SelectorReactiveComposite"]
+script = ExtResource("2_l2p1q")
+
+[node name="ConditionLeaf" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite" node_paths=PackedStringArray("button")]
+script = ExtResource("4_hnp0o")
+button = NodePath("../../../../VBoxContainer/Button")
+
+[node name="SelectorComposite" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite"]
+script = ExtResource("5_egvwb")
+
+[node name="ActionLeaf3" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite/SelectorComposite" node_paths=PackedStringArray("label")]
+script = ExtResource("4_58o2b")
+label = NodePath("../../../../../VBoxContainer/HBoxContainer3/InterruptsLabel3")
+
+[node name="ActionLeaf2" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite/SelectorComposite" node_paths=PackedStringArray("label")]
+script = ExtResource("4_58o2b")
+label = NodePath("../../../../../VBoxContainer/HBoxContainer2/InterruptsLabel2")
+
+[node name="SequenceReactiveComposite2" type="Node" parent="BeehaveTree/SelectorReactiveComposite"]
+script = ExtResource("2_l2p1q")
+
+[node name="ConditionLeaf2" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite2" node_paths=PackedStringArray("button")]
+script = ExtResource("4_hnp0o")
+button = NodePath("../../../../VBoxContainer/Button")
+reversed = true
+
+[node name="ActionLeaf1" type="Node" parent="BeehaveTree/SelectorReactiveComposite/SequenceReactiveComposite2" node_paths=PackedStringArray("label")]
+script = ExtResource("4_58o2b")
+label = NodePath("../../../../VBoxContainer/HBoxContainer/InterruptsLabel1")
